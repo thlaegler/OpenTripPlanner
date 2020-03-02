@@ -1,0 +1,156 @@
+{
+  "routingDefaults": {
+    "showIntermediateStops": true,
+    "numItineraries": 8,
+    "maxWalkDistance": 1000,
+    "walkSpeed": 1.3,
+    "transferSlack": 120,
+    "maxTransfers": 7,
+    "waitReluctance": 0.95,
+    "waitAtBeginningFactor": 0.7,
+    "walkReluctance": 1.75,
+    "stairsReluctance": 1.65,
+    "walkBoardCost": 540,
+    "carDropoffTime": 240,
+    "ignoreRealtimeUpdates": false,
+    "useBikeRentalAvailabilityInformation": true
+  },
+  "transit": {
+    "searchThreadPoolSize": 8
+  },
+  "boardTimes": {
+    "AIRPLANE": 3000
+  },
+  "alightTimes": {
+    "AIRPLANE": 1200
+  },
+  "timeouts": [
+    2.5,
+    2.5,
+    2.5,
+    2.5,
+    2.5,
+    2.4,
+    2.3,
+    2.2,
+    2.1,
+    2,
+    1.9,
+    1.8,
+    1.7,
+    1.6,
+    1.5,
+    1
+  ],
+  "requestLogFile": "/var/otp/request.log",
+  "updaters": [
+    {
+      "type": "bike-rental",
+      "sourceType": "bird",
+      "network": "Bird",
+      "networks": "bird-auckland",
+      "frequencySec": "60",
+      "url": "https://api.birdapp.com/bird/nearby?latitude=-36.844442&longitude=174.765439&radius=2000"
+    },
+    {
+      "type": "bike-rental",
+      "sourceType": "lime",
+      "network": "Lime",
+      "networks": "lime-auckland",
+      "frequencySec": "60",
+      "url": "https://web-production.lime.bike/api/rider/v1/views/map?ne_lat=-45.5&ne_lng=170.9&sw_lat=-46.1&sw_lng=170.1&user_latitude=-45.869000&user_longitude=170.520953&zoom=16"
+    },
+    {
+      "type": "bike-rental-DISABLED",
+      "sourceType": "lime",
+      "network": "Lime",
+      "networks": "lime-wellington",
+      "frequencySec": "60",
+      "url": "https://web-production.lime.bike/api/rider/v1/views/map?ne_lat=-45.5&ne_lng=170.9&sw_lat=-46.1&sw_lng=170.1&user_latitude=-45.869000&user_longitude=170.520953&zoom=16"
+    },
+    {
+      "type": "bike-rental-DISABLED",
+      "sourceType": "lime",
+      "network": "Lime",
+      "networks": "lime-christchurch",
+      "frequencySec": "60",
+      "url": "https://web-production.lime.bike/api/rider/v1/views/map?ne_lat=-45.5&ne_lng=170.9&sw_lat=-46.1&sw_lng=170.1&user_latitude=-45.869000&user_longitude=170.520953&zoom=16"
+    },
+    {
+      "type": "bike-rental-DISABLED",
+      "sourceType": "lime",
+      "network": "Lime",
+      "networks": "lime-dunedin",
+      "frequencySec": "60",
+      "url": "https://web-production.lime.bike/api/rider/v1/views/map?ne_lat=-45.5&ne_lng=170.9&sw_lat=-46.1&sw_lng=170.1&user_latitude=-45.869000&user_longitude=170.520953&zoom=16"
+    },
+    {
+      "type": "bike-rental-DISABLED",
+      "sourceType": "onzo",
+      "network": "Onzo",
+      "networks": "onzo-auckland",
+      "frequencySec": "60",
+      "url": "https://app.onzo.co.nz/nearby/-36.844899/174.757550/2000.0"
+    },
+    {
+      "type": "bike-rental",
+      "sourceType": "next-bike",
+      "network": "Nextbike",
+      "networks": "nextbike-auckland",
+      "frequencySec": "60",
+      "url": "http://api.citybik.es/v2/networks/nextbike-auckland"
+    },
+    {
+      "type": "bike-rental",
+      "sourceType": "next-bike",
+      "network": "Nextbike",
+      "networks": "nextbike-auckland-waterfront",
+      "frequencySec": "60",
+      "url": "http://api.citybik.es/v2/networks/nextbike-auckland-waterfront"
+    },
+    {
+      "type": "bike-rental",
+      "sourceType": "next-bike",
+      "network": "Nextbike",
+      "networks": "nextbike-christchurch",
+      "frequencySec": "60",
+      "url": "http://api.citybik.es/v2/networks/nextbike-christchurch"
+    },
+    {
+      "type": "mobility23-firebase-gtfs-updater-DISABLED",
+      "feedId": "at",
+      "projectId": "mobility23",
+      "url": "https://mobility23.firebaseio.com",
+      "tripUpdateChannel": "gtfs/realtime/trip_updates",
+      "alertChannel": "gtfs/realtime/alerts"
+    },
+    {
+      "type": "mobility23-pubsub-gtfs-updater-DISABLED",
+      "projectId": "mobility23",
+      "tripUpdateTopic": "gtfs-realtime-trip-updates",
+      "alertTopic": "gtfs-realtime-alerts"
+    },
+    {
+      "type": "mobility23-kafka-gtfs-alert-updater",
+      "projectId": "mobility23",
+      "url": "mobility23-kafka:9092",
+      "url-local": "localhost:9092",
+      "alertTopic": "gtfs-realtime-alerts"
+    },
+    {
+      "type": "kafka-gtfs-rt-updater",
+      "projectId": "mobility23",
+      "url": "mobility23-kafka:9092",
+      "url-local": "localhost:9092",
+      "tripUpdateTopic": "gtfs-realtime-trip-updates"
+    },
+    {
+      "type": "mobility23-pubsub-gtfs-downloader-DISABLED",
+      "feedId": "at",
+      "projectId": "mobility23",
+      "bucketName": "mobility23-gtfs",
+      "subscriptionId": "mobility23-gtfs-static-otp",
+      "triggerId": "69cefb4d-4127-41de-9315-8e89bc90d1a7"
+    }
+  ]
+}

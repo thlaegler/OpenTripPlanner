@@ -1,0 +1,24 @@
+apiVersion: v1
+name: mobility23-otp2
+version: CHART_VERSION
+appVersion: CHART_VERSION
+icon: https://www.google.de/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
+home: https://github.com/thlaegler/OpenTripPlanner
+source:
+- https://github.com/thlaegler/OpenTripPlanner
+description: 'Mobility23 | OpenTripPlanner | Customized fork of OTPv2 multi-modal Trip Planner'
+maintainers:
+- name: thlaegler
+  email: info@mobility23.com
+keywords:
+- Mobility
+- MaaS
+- Open
+- Transport
+- Public Transport
+- GTFS
+- Realtime
+- Backend
+- API
+- REST
+- Web

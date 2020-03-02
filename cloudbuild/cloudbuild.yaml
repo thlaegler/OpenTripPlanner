@@ -1,0 +1,51 @@
+steps:
+
+- id: INIT
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: /bin/bash
+  args:
+  - '-c'
+  - |
+    gsutil -m cp -n -r "gs://$PROJECT_ID-private/*" cloudbuild/
+    chmod +x cloudbuild/*.sh
+    ./cloudbuild/init.sh $PROJECT_ID $_DEBUG $SHORT_SHA "branch_$BRANCH_NAME" "tag_$TAG_NAME"
+    gsutil mb -p $PROJECT_ID -b on -c regional -l us-central1 gs://$PROJECT_ID-opentripplanner
+    gsutil -m cp "$PROJECT_ID-router-config.json" "gs://$PROJECT_ID-gtfs/opentripplanner/new/router-config.json"
+
+- id: MAVEN BUILD
+  name: gcr.io/$PROJECT_ID/maven-java11-builder
+  waitFor: [ 'INIT' ]
+  entrypoint: /bin/bash
+  args: [ './cloudbuild/maven.sh' ]
+
+- id: DOCKER BUILD
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ 'MAVEN BUILD' ]
+  entrypoint: /bin/bash
+  args: [ './cloudbuild/docker.sh' ]
+
+- id: BUILD GRAPH ASYNC
+  name: gcr.io/cloud-builders/gcloud
+  waitFor: [ 'DOCKER BUILD' ]
+  entrypoint: /bin/bash
+  args: [ './cloudbuild/graph_builder_trigger.sh' ]
+
+- id: HELM DEPLOY
+  name: gcr.io/$PROJECT_ID/helm-builder
+  waitFor: [ 'BUILD GRAPH ASYNC' ]
+  entrypoint: /bin/bash
+  args: [ './cloudbuild/helm.sh' ]
+  
+- id: REPORT
+  name: gcr.io/cloud-builders/gcloud
+  waitFor: [ 'HELM DEPLOY' ]
+  entrypoint: /bin/bash
+  args: [ './cloudbuild/report.sh' ]
+
+
+#options:
+#  machineType: 'N1_HIGHCPU_8'
+  
+timeout: 3600s
+
+images: [ 'gcr.io/$PROJECT_ID/mobility23-otp2' ]

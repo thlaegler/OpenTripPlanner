@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobility23-otp2
+  {{- if .Values.service.internal }}
+  annotations:
+    cloud.google.com/load-balancer-type: Internal
+  {{- end }}
+  labels:
+    app: mobility23-otp2
+    version: {{ .Values.docker.tag }}
+spec:
+  selector:
+    app: mobility23-otp2
+  type: {{ .Values.service.type }}
+  ports:
+  - name: api
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  - name: api-secure
+    protocol: TCP
+    port: 8081
+    targetPort: 8081

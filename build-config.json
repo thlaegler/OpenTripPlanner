@@ -1,0 +1,54 @@
+{
+	"embedRouterConfig": false,
+	"streets": true,
+	"transit": true,
+	"fares": "zones-and-age-classes",
+	"areaVisibility": true,
+	"dataImportReport": true,
+	"matchBusRoutesToStreets": false,
+	"parentStopLinking": true,
+	"platformEntriesLinking": true,
+	"extraEdgesStopPlatformLink": true,
+	"stationTransfers": false,
+	"useTransfersTxt": false,
+	"staticBikeRental": true,
+	"staticParkAndRide": true,
+	"staticBikeParkAndRide": true,
+	"islandWithoutStopsMaxSize": 40,
+	"islandWithStopsMaxSize": 20,
+	"storage": {
+		"buildReportDir": "file:///data/build",
+		"graph": "file:///data/graph.obj",
+		"streetGraph": "file:///data/streetGraph.obj",
+		"osm": [
+			"file:///data/new-zealand-latest.osm.pbf"
+		],
+		"dem": [
+			"file:///data/elevation_nz.tif"
+		],
+		"gtfs": [
+			"file:///data/at.zip",
+			"file:///data/air_nz.zip",
+			"file:///data/bluebridge_ferry.zip",
+			"file:///data/glenorchy.zip",
+			"file:///data/bop_regional_council.zip",
+			"file:///data/gisborne_district_council.zip",
+			"file:///data/horizons_regional_council.zip",
+			"file:///data/invercargill_city_council.zip",
+			"file:///data/marlborough_district_council.zip",
+			"file:///data/nelson_city_council.zip",
+			"file:///data/northland_regional_council.zip",
+			"file:///data/waikato_regional_council.zip",
+			"file:///data/taranaki_regional_council.zip",
+			"file:///data/nzski.zip",
+			"file:///data/otago_regional_council.zip",
+			"file:///data/queenstown_ferries.zip",
+			"file:///data/metro_christchurch.zip",
+			"file:///data/metro_timaru.zip",
+			"file:///data/nz_intercity.zip",
+			"file:///data/metlink_wellington.zip",
+			"file:///data/test_public_transport.zip"
+		],
+		"gsCredentials": "service-account.json"
+	}
+}

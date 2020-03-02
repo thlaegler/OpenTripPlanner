@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mobility23-otp2
+  labels:
+    app: mobility23-otp2
+    version: {{ .Values.docker.tag }}
+spec:
+  replicas: {{ .Values.deployment.numberOfReplicas }}
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: mobility23-otp2
+  template:
+    metadata:
+      labels:
+        app: mobility23-otp2
+    spec:
+      containers:
+      - name: mobility23-otp2
+        image: '{{ .Values.docker.registry }}/mobility23-otp2:{{ .Values.docker.tag }}'
+        imagePullPolicy: Always
+#        securityContext:
+#          privileged: true
+#          capabilities:
+#            add:
+#              - SYS_ADMIN
+#        lifecycle:
+#          postStart:
+#            exec:
+#              command: ["gcsfuse", "-o", "nonempty", "$PROJECT_ID-opentripplanner", "/data"]
+#          preStop:
+#            exec:
+#              command: ["fusermount", "-u", "/data"]
+        env:
+        - name: OTP_PROFILE
+          value: '{{ .Values.otp.profile }}'
+        - name: JAVA_OPTS
+          value: '{{ .Values.java.options }}'
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: '/etc/config/service-account.json'
+        envFrom:
+        - configMapRef:
+            name: mobility23-config-map
+        - secretRef:
+            name: mobility23-secret
+        imagePullPolicy: Always
+        ports:
+        - name: api
+          containerPort: 8080
+        - name: api-secure
+          containerPort: 8081
+        resources:
+          limits:
+            memory: 4Gi
+#            cpu: 2000m # 2 full cores
+          requests:
+            memory: 3Gi
+#            cpu: 1000m # 1 full cores
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: http
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 10
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: http
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 10
+        volumeMounts:
+        - name: mobility23-service-account
+          mountPath: /etc/config
+          readOnly: true
+#        {{- if .Values.otp.server }}
+#        - name: gtfs-persistent-disk
+#          mountPath: /data
+#        {{- end }}
+      volumes:
+      - name: mobility23-service-account
+        secret:
+          secretName: mobility23-service-account
+#      {{- if .Values.otp.server }}
+#      - name: gtfs-persistent-disk
+#        gcePersistentDisk:
+#          pdName: gtfs-persistent-disk
+#          fsType: ext4
+#      {{- end }}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

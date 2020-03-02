@@ -1,0 +1,24 @@
+steps:
+
+- id: INIT
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: /bin/bash
+  args:
+  - '-c'
+  - |
+    gsutil -m cp -n -r "gs://$PROJECT_ID-private/*" cloudbuild/
+    chmod +x cloudbuild/*.sh
+    ./cloudbuild/init.sh $PROJECT_ID $_DEBUG $SHORT_SHA "branch_$BRANCH_NAME" "tag_$TAG_NAME"
+    gsutil -m cp "build-config.json" "gs://$PROJECT_ID-gtfs/opentripplanner/new/build-config.json"
+
+- id: BUILD GRAPH ASYNC
+  name: gcr.io/cloud-builders/gcloud
+  waitFor: [ 'INIT' ]
+  entrypoint: /bin/bash
+  args: [ './cloudbuild/graph_builder_trigger.sh', '$_TAG' ]
+
+
+options:
+  machineType: 'N1_HIGHCPU_8'
+  
+timeout: 120s

@@ -5,11 +5,17 @@ import org.opentripplanner.model.routing.TripSearchMetadata;
 
 public class TripSearchMetadataMapper {
 
-    public static ApiTripSearchMetadata mapTripSearchMetadata(TripSearchMetadata domain) {
-        ApiTripSearchMetadata api = new ApiTripSearchMetadata();
-        api.searchWindowUsed = (int)domain.searchWindowUsed.toSeconds();
-        api.nextDateTime = domain.nextDateTime.toEpochMilli();
-        api.prevDateTime = domain.prevDateTime.toEpochMilli();
-        return api;
+  public static ApiTripSearchMetadata mapTripSearchMetadata(TripSearchMetadata domain) {
+    ApiTripSearchMetadata api = new ApiTripSearchMetadata();
+    if (domain.searchWindowUsed != null) {
+      api.searchWindowUsed = (int) domain.searchWindowUsed.toSeconds();
     }
+    if (domain.nextDateTime != null) {
+      api.nextDateTime = domain.nextDateTime.toEpochMilli();
+    }
+    if (domain.prevDateTime != null) {
+      api.prevDateTime = domain.prevDateTime.toEpochMilli();
+    }
+    return api;
+  }
 }

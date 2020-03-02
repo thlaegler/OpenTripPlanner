@@ -1,0 +1,13 @@
+docker:
+  registry: 'DOCKER_REGISTRY'
+  image: 'mobility23-otp2'
+  tag: 'DOCKER_TAG'
+service:
+  type: 'LoadBalancer'
+  internal: true
+deployment:
+  numberOfReplicas: 1
+otp:
+  profile: SERVER
+java:
+  options: '-Xmx4G -server -Xverify:none -XX:+UnlockExperimentalVMOptions -XX:+UseParallelGC'
